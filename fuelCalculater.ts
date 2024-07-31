@@ -1,9 +1,22 @@
 // Calculate the fuel needed for a one module.
 const calculateFuel = (mass: number): number => Math.floor(mass / 3) - 2;
 
+// Calculating the total fuel needed for one module, including the fuel for the fuel.
+const calculateTotalFuel = (mass: number): number => {
+  let totalFuel = 0;
+  let additionalFuel = calculateFuel(mass);
+
+  while (additionalFuel > 0) {
+    totalFuel = totalFuel + additionalFuel;
+    additionalFuel = calculateFuel(additionalFuel);
+  }
+
+  return totalFuel;
+};
+
 // Calculate the total fuel needed for all modules.
 const totalFuelRequirement = (masses: number[]): number =>
-  masses.reduce((totalFuel, mass) => totalFuel + calculateFuel(mass), 0);
+  masses.reduce((totalFuel, mass) => totalFuel + calculateTotalFuel(mass), 0);
 
 // Calling the function with our provided input.
 const moduleMasses = [
@@ -18,5 +31,5 @@ const moduleMasses = [
   135413, 138807, 115286, 132455, 73051, 83131, 78528, 140029, 117782, 143779,
   55642, 141798, 79406, 50167, 124606, 92822, 144622, 85043, 126924, 135624,
 ];
-const totalFuel = totalFuelRequirement(moduleMasses);
-console.log(`Total fuel requirement: ${totalFuel}`);
+const totalAmountFuel = totalFuelRequirement(moduleMasses);
+console.log(`Total fuel requirement: ${totalAmountFuel}`);
